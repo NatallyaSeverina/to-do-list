@@ -14,10 +14,16 @@ class ToDoListWrapper extends Component {
   componentWillMount() {
     getTasks().then((tasks) => this.setState({ tasks }));
   }
+
+  // this.addTask = this.addTask.bind(this)
+  addTask = (taskData) => {
+    console.log(taskData);
+  }
+
   render() {
     return (
       <div className="toDoListWrapper">
-        <AddTaskForm title="Add task" />
+        <AddTaskForm title="Add task" onSubmit={this.addTask} />
         <FilterForm title="Filter" />
         <TaskTable tasks={this.state.tasks} />
       </div>

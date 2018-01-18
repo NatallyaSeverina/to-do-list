@@ -5,8 +5,9 @@ import PropTypes from 'prop-types';
 
 class DateSelect extends Component {
   render() {
+    let date = new Date();
     return (
-      <input type="date" name={this.props.name} data-placeholder={this.props.title} />
+      <input type="date" name={this.props.name} value="2018-01-18" />
     )
   }
 }
