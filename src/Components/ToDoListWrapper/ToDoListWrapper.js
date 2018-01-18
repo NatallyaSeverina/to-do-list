@@ -9,7 +9,10 @@ import { getTasks, addTask, removeTask, updateTask } from '../../utils/apiWrappe
 
 class ToDoListWrapper extends Component {
   state = {
-    tasks: []
+    tasks: [],
+    filter: {
+      showCompleted: true
+    }
   }
   componentWillMount() {
     getTasks().then((tasks) => this.setState({ tasks }));
@@ -43,12 +46,28 @@ class ToDoListWrapper extends Component {
     }))
   }
 
+  onFilterUpdate = (changes) => {
+    this.setState({
+      filter: {
+        ...this.state.filter,
+        ...changes
+      }
+    });
+  }
+
   render() {
+    const {
+      tasks,
+      filter,
+      filter: { showCompleted }
+    } = this.state;
+    const filteredTasks = showCompleted ? tasks : tasks.filter((item) => !item.complited);
+
     return (
       <div className="toDoListWrapper">
         <AddTaskForm title="Add task" onSubmit={this.addTask} />
-        <FilterForm title="Filter" />
-        <TaskTable tasks={this.state.tasks} removeTask={this.removeTask} updateTask={this.updateTask} />
+        <FilterForm filter={filter} onFilterUpdate={this.onFilterUpdate} title="Filter" />
+        <TaskTable tasks={filteredTasks} removeTask={this.removeTask} updateTask={this.updateTask} />
       </div>
     );
   }
