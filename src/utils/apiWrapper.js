@@ -31,5 +31,5 @@ export const addTask = data => {
 export const removeTask = id => {
   tasks = tasks.filter(item => item.id !== id);
   saveTasks();
-  return new Promise(resolve => setTimeout(resolve, 2000, id));
+  return new Promise((resolve) => setTimeout(resolve, 5000, id));
 }
