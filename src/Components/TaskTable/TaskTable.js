@@ -8,12 +8,17 @@ import PropTypes from 'prop-types';
 
 class TaskTable extends Component {
     render() {
+        const {
+            tasks = [],
+            updateTask,
+            removeTask
+        } = this.props;
         return (
             <table className="taskTable">
                 <RowHeadTable />
                 <tbody>
-                    {this.props.tasks.map((task) =>
-                        <TaskRow key={task.id} task={task} removeTask={this.props.removeTask} />)}
+                    {tasks.map((task) =>
+                        <TaskRow key={task.id} task={task} removeTask={removeTask} updateTask={updateTask} />)}
                 </tbody>
             </table>
         )
@@ -22,6 +27,7 @@ class TaskTable extends Component {
 }
 TaskTable.propTypes = {
     tasks: PropTypes.array,
-    removeTask: PropTypes.func
+    removeTask: PropTypes.func,
+    updateTask: PropTypes.func
 };
 export default TaskTable;
