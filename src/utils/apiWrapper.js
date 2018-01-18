@@ -17,4 +17,13 @@ tasks = Array.isArray(tasks) ? tasks : [
   { complited: true, title: 'Play with kids', priority: 'Normal', date: '2018-06-01' },
 ].map(item => ({ ...item, id: getId() }));
 
-export const getTasks = () => new Promise(resolve => setTimeout(resolve, 0, tasks));
+const saveTasks = () => localStorage.setItem(LS_KEY, JSON.stringify(tasks));
+
+export const getTasks = () => new Promise(resolve => setTimeout(resolve, 0, [...tasks]));
+
+export const addTask = data => {
+  let task = { ...data, id: getId() };
+  tasks.push(task);
+  saveTasks();
+  return new Promise(resolve => setTimeout(resolve, 2000, task));
+}

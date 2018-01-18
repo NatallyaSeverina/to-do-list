@@ -5,7 +5,7 @@ import FilterForm from '../FilterForm/FilterForm';
 import TaskTable from '../TaskTable/TaskTable';
 import PropTypes from 'prop-types';
 
-import { getTasks } from '../../utils/apiWrapper';
+import { getTasks, addTask } from '../../utils/apiWrapper';
 
 class ToDoListWrapper extends Component {
   state = {
@@ -17,7 +17,10 @@ class ToDoListWrapper extends Component {
 
   // this.addTask = this.addTask.bind(this)
   addTask = (taskData) => {
-    console.log(taskData);
+    addTask(taskData).then((taskData) =>
+      this.setState({
+        tasks: [...this.state.tasks, taskData]
+      }))
   }
 
   render() {
