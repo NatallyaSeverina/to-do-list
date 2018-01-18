@@ -4,19 +4,22 @@ import { AddTaskForm } from '../AddTaskForm';
 import FilterForm from '../FilterForm/FilterForm';
 import TaskTable from '../TaskTable/TaskTable';
 import PropTypes from 'prop-types';
-var Tasks = [
-  { complited: true, title: 'Create To do app', priority: 'Normal', date: '2018-01-01' },
-  { complited: false, title: 'Visit lesson', priority: 'Low', date: '2018-05-01' },
-  { complited: false, title: 'Have a rest', priority: 'Normal', date: '2018-01-01' },
-  { complited: true, title: 'Play with kids', priority: 'Normal', date: '2018-06-01' },
-];
+
+import { getTasks } from '../../utils/apiWrapper';
+
 class ToDoListWrapper extends Component {
+  state = {
+    tasks: []
+  }
+  componentWillMount() {
+    getTasks().then((tasks) => this.setState({ tasks }));
+  }
   render() {
     return (
       <div className="toDoListWrapper">
         <AddTaskForm title="Add task" />
         <FilterForm title="Filter" />
-        <TaskTable tasks={Tasks} />
+        <TaskTable tasks={this.state.tasks} />
       </div>
     );
   }
