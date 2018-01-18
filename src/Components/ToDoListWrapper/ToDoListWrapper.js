@@ -5,7 +5,7 @@ import FilterForm from '../FilterForm/FilterForm';
 import TaskTable from '../TaskTable/TaskTable';
 import PropTypes from 'prop-types';
 
-import { getTasks, addTask } from '../../utils/apiWrapper';
+import { getTasks, addTask, removeTask } from '../../utils/apiWrapper';
 
 class ToDoListWrapper extends Component {
   state = {
@@ -23,12 +23,18 @@ class ToDoListWrapper extends Component {
       }))
   }
 
+  removeTask = (id) => {
+    removeTask(id).then(() => this.setState({
+      tasks: this.state.tasks.filter(item => item.id !== id)
+    }))
+  }
+
   render() {
     return (
       <div className="toDoListWrapper">
         <AddTaskForm title="Add task" onSubmit={this.addTask} />
         <FilterForm title="Filter" />
-        <TaskTable tasks={this.state.tasks} />
+        <TaskTable tasks={this.state.tasks} removeTask={this.removeTask} />
       </div>
     );
   }

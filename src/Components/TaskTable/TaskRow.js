@@ -6,17 +6,21 @@ import PropTypes from 'prop-types';
 
 class TaskRow extends Component {
     render() {
+        const { task, removeTask } = this.props;
         return (
             <tr>
-                <td><input type="checkbox" checked={this.props.task.complited} /></td>
-                <td>{this.props.task.title}</td>
-                <td>{this.props.task.priority}</td>
-                <td>{this.props.task.date}</td>
+                <td>{task.id}</td>
+                <td><input type="checkbox" checked={task.complited} /></td>
+                <td>{task.title}</td>
+                <td>{task.priority}</td>
+                <td>{task.date}</td>
+                <td><button onClick={() => removeTask(task.id)}>X</button></td>
             </tr>
         );
     }
 }
 TaskRow.propTypes = {
-    task: PropTypes.object
+    task: PropTypes.object,
+    removeTask: PropTypes.removeTask
 };
 export default TaskRow;

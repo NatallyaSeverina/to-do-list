@@ -12,7 +12,8 @@ class TaskTable extends Component {
             <table className="taskTable">
                 <RowHeadTable />
                 <tbody>
-                    {this.props.tasks.map((task) => <TaskRow key={task.id} task={task} />)}
+                    {this.props.tasks.map((task) =>
+                        <TaskRow key={task.id} task={task} removeTask={this.props.removeTask} />)}
                 </tbody>
             </table>
         )
@@ -20,6 +21,7 @@ class TaskTable extends Component {
     }
 }
 TaskTable.propTypes = {
-    tasks: PropTypes.array
+    tasks: PropTypes.array,
+    removeTask: PropTypes.func
 };
 export default TaskTable;

@@ -8,10 +8,12 @@ class RowHeadTable extends Component {
   render() {
     return (
       <tr>
+        <HeaderColumnSort columnName="Id" />
         <HeaderColumnSort columnName="Done" />
         <HeaderColumnSort columnName="Title" />
         <HeaderColumnSort columnName="Priority" />
         <HeaderColumnSort columnName="Date" />
+        <HeaderColumnSort columnName="Remove" />
       </tr>
     )
   }
