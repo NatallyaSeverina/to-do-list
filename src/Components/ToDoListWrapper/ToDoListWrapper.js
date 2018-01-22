@@ -1,25 +1,76 @@
 import React, { Component } from 'react';
 import './ToDoListWrapper.css';
-import AddTaskForm from'../AddTaskForm/AddTaskForm.js';
-import FilterForm from'../FilterForm/FilterForm.js';
-import TaskTable from'../TaskTable/TaskTable.js';
+import { AddTaskForm } from '../AddTaskForm';
+import FilterForm from '../FilterForm/FilterForm';
+import TaskTable from '../TaskTable/TaskTable';
 import PropTypes from 'prop-types';
-var Tasks = [
-    { complited: true, title: 'Create To do app', priority: 'Normal', date: '2018-01-01' },
-    { complited: false, title: 'Visit lesson', priority: 'Low', date: '2018-05-01' },
-    { complited: false, title: 'Have a rest', priority: 'Normal', date: '2018-01-01' },
-    { complited: true, title: 'Play with kids', priority: 'Normal', date: '2018-06-01' },
-  ];
-  class ToDoListWrapper extends Component {
-    render() {
-      return (
-        <div className="toDoListWrapper">
-          <AddTaskForm title="Add task" />
-          <FilterForm title="Filter" />
-          <TaskTable tasks={Tasks} />
-        </div>
-      );
+
+import { getTasks, addTask, removeTask, updateTask } from '../../utils/apiWrapper';
+
+class ToDoListWrapper extends Component {
+  state = {
+    tasks: [],
+    filter: {
+      showCompleted: true
     }
   }
-  
-  export default ToDoListWrapper;
+  componentWillMount() {
+    getTasks().then((tasks) => this.setState({ tasks }));
+  }
+
+  // this.addTask = this.addTask.bind(this)
+  addTask = (taskData) => {
+    addTask(taskData).then((taskData) =>
+      this.setState({
+        tasks: [...this.state.tasks, taskData]
+      }))
+  }
+
+  removeTask = (id) => {
+    let tasks = this.state.tasks;
+    this.setState({
+      tasks: this.state.tasks.filter(item => item.id !== id)
+    });
+
+    removeTask(id).catch(() => this.setState({
+      tasks
+    }));
+  }
+
+  updateTask = (id, changes) => {
+    updateTask(id, changes).then((udatedItem) => this.setState({
+      tasks: this.state.tasks.map(item => item.id !== id ? item : {
+        ...item,
+        ...udatedItem
+      })
+    }))
+  }
+
+  onFilterUpdate = (changes) => {
+    this.setState({
+      filter: {
+        ...this.state.filter,
+        ...changes
+      }
+    });
+  }
+
+  render() {
+    const {
+      tasks,
+      filter,
+      filter: { showCompleted }
+    } = this.state;
+    const filteredTasks = showCompleted ? tasks : tasks.filter((item) => !item.complited);
+
+    return (
+      <div className="toDoListWrapper">
+        <AddTaskForm title="Add task" onSubmit={this.addTask} />
+        <FilterForm filter={filter} onFilterUpdate={this.onFilterUpdate} title="Filter" />
+        <TaskTable tasks={filteredTasks} removeTask={this.removeTask} updateTask={this.updateTask} />
+      </div>
+    );
+  }
+}
+
+export default ToDoListWrapper;

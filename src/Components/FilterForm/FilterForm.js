@@ -11,7 +11,10 @@ class FilterForm extends Component {
       <form name={this.props.name} className="toDoListForm">
         <fieldset>
           <legend>{this.props.title}</legend>
-          <input name="complited" type="checkbox"></input>
+          <input
+            type="checkbox"
+            checked={this.props.filter.showCompleted}
+            onChange={(ev) => this.props.onFilterUpdate({ showCompleted: ev.target.checked })} ></input>
           <label>Show complited</label>
           <DateSelect name="dateFrom" title="DateFrom" />
           <DateSelect name="dateTo" title="DateTo" />
@@ -25,6 +28,8 @@ class FilterForm extends Component {
 }
 FilterForm.propTypes = {
   title: PropTypes.string,
-  name: PropTypes.string
+  name: PropTypes.string,
+  onFilterUpdate: PropTypes.func,
+  filter: PropTypes.object
 };
-  export default FilterForm;
+export default FilterForm;

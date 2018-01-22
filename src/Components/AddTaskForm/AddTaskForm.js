@@ -5,25 +5,33 @@ import PrioritySelect from './PrioritySelect.js';
 import DateSelect from '../DateSelect/DateSelect.js';
 import PropTypes from 'prop-types';
 
-class AddTaskForm extends Component {
-    render() {
-      return (
-        <form name={this.props.name} className="toDoListForm">
-          <fieldset>
-            <legend>{this.props.title}</legend>
-            <SearchInput name="title" title="Title" />
-            <PrioritySelect name="priority"/>
-            <DateSelect name="date" title="Date" />
-            <textarea name="descript" placeholder="Description" />
-            <input type="submit" class="submit" value="Add"></input>
-          </fieldset>
-        </form>
-  
-      )
-    }
+export class AddTaskForm extends Component {
+  onSubmit(ev) {
+    ev.preventDefault();
+    let formData = [...ev.target.querySelectorAll('[name]')]
+      .reduce((hash, item) => ({
+        ...hash,
+        [item.getAttribute('name')]: item.value
+      }), {});
+    this.props.onSubmit(formData);
+    ev.target.reset();
   }
-  AddTaskForm.propTypes = {
-     name: PropTypes.string,
-     title: PropTypes.string
-  };
-  export default AddTaskForm;
+  render() {
+    return (
+      <form className="toDoListForm" onSubmit={this.onSubmit.bind(this)} >
+        <fieldset>
+          <legend>{this.props.title}</legend>
+          <SearchInput name="title" title="Title" />
+          <PrioritySelect name="priority" />
+          <DateSelect name="date" title="Date" />
+          <textarea name="descript" placeholder="Description" />
+          <input type="submit" className="submit" value="Add"></input>
+        </fieldset>
+      </ form>
+
+    )
+  }
+}
+AddTaskForm.propTypes = {
+  title: PropTypes.string
+};
